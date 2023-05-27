@@ -1,4 +1,4 @@
-# shared_pref
+# Flutter SharedPref
 
 A new Flutter project which is focusing learn shared pref.
 
