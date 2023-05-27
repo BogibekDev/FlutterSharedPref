@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_pref/pages/home_page.dart';
+import 'package:shared_pref/pages/signin_page.dart';
+import 'package:shared_pref/pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +19,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: SignInPage(),
+      routes: {
+        SignInPage.id: (context) => SignInPage(),
+        SignUpPage.id: (context) => SignUpPage(),
+        HomePage.id: (context) => HomePage(),
+      },
     );
   }
 }
