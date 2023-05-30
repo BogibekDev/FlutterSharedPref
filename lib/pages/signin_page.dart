@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_pref/pages/home_page.dart';
+import 'package:shared_pref/pages/signup_page.dart';
+import 'package:shared_pref/utils/prefs.dart';
+
+import '../models/signin.dart';
 
 class SignInPage extends StatefulWidget {
   static const String id = "SignInPage";
@@ -10,11 +15,13 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: Colors.grey.shade100,
         padding: const EdgeInsets.all(20),
@@ -49,18 +56,23 @@ class _SignInPageState extends State<SignInPage> {
             Container(
               margin: const EdgeInsets.only(top: 20),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               height: 50,
               decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.blueAccent, width: 2),
                   borderRadius: BorderRadius.circular(25)),
-              child: const TextField(
-                style: TextStyle(
+              child: TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                style: const TextStyle(
                     color: Colors.blueAccent,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   icon: Icon(
                     Icons.person_2_outlined,
                     color: Colors.blueAccent,
@@ -77,16 +89,22 @@ class _SignInPageState extends State<SignInPage> {
             Container(
               margin: const EdgeInsets.only(top: 20),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               height: 50,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(25)),
-              child: const TextField(
-                style: TextStyle(
+              child: TextField(
+                controller: _passwordController,
+                obscureText: true,
+                obscuringCharacter: "*",
+                style: const TextStyle(
                     color: Colors.blueAccent,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   icon: Icon(
                     Icons.lock_open_rounded,
                     color: Colors.grey,
@@ -117,7 +135,18 @@ class _SignInPageState extends State<SignInPage> {
                   borderRadius: BorderRadius.circular(25),
                   color: Colors.blue.shade900),
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (_emailController.text.isNotEmpty &&
+                      _passwordController.text.isNotEmpty) {
+                    SharedPrefs.saveObject(
+                      SignIn(
+                        _emailController.text,
+                        _passwordController.text,
+                      ),
+                    );
+                    Navigator.pushReplacementNamed(context, HomePage.id);
+                  }
+                },
                 child: const Text(
                   "LOG IN",
                   style: TextStyle(
@@ -213,7 +242,9 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 const SizedBox(width: 5),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, SignUpPage.id);
+                  },
                   child: const Text(
                     "Sign Up",
                     style: TextStyle(
